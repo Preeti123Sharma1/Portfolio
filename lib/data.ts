@@ -13,8 +13,8 @@ export const experience = [
     role: "Web Designer",
     company: "Jamtech Technologies Pvt. Ltd.",
     location: "Lucknow-UP, India",
-    date: "February 2025 – Present",
-    current: true,
+    date: "February 2025 – April 2026",
+    current: false,
     desc: "Working as a Web Designer, creating responsive and visually compelling web interfaces for clients across various industries.",
   },
   {
@@ -67,14 +67,14 @@ export const projects = [
     num: "01",
     name: "Aimax Auto",
     desc: "Automotive platform with modern UI and seamless user authentication flow.",
-    tags: ["React.js", "CSS3", "UI/UX"],
+    tags: ["React.js", "CSS3", "Bootstrap"],
     url: "https://aimax-auto.netlify.app/login",
   },
   {
     num: "02",
     name: "OpenCheck AI",
     desc: "AI-powered application interface with clean, intuitive design and smooth interactions.",
-    tags: ["Tailwind", "React", "CSS3"],
+    tags: ["Tailwind", "React.js", "CSS3"],
     url: "https://app.opencheck.ai",
   },
   {

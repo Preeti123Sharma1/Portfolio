@@ -2,49 +2,38 @@
 import { useEffect, useRef } from "react";
 
 export default function Cursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-  const mouse = useRef({ x: 0, y: 0 });
-  const follower = useRef({ x: 0, y: 0 });
+  const dot  = useRef<HTMLDivElement>(null);
+  const ring = useRef<HTMLDivElement>(null);
+  const pos  = useRef({ x: 0, y: 0 });
+  const cur  = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mouse.current = { x: e.clientX, y: e.clientY };
-      if (dotRef.current) {
-        dotRef.current.style.left = e.clientX + "px";
-        dotRef.current.style.top = e.clientY + "px";
+    const move = (e: MouseEvent) => {
+      pos.current = { x: e.clientX, y: e.clientY };
+      if (dot.current) {
+        dot.current.style.left = e.clientX + "px";
+        dot.current.style.top  = e.clientY + "px";
       }
     };
-    document.addEventListener("mousemove", onMove);
-
+    document.addEventListener("mousemove", move);
     let raf: number;
-    const animate = () => {
-      follower.current.x += (mouse.current.x - follower.current.x) * 0.12;
-      follower.current.y += (mouse.current.y - follower.current.y) * 0.12;
-      if (ringRef.current) {
-        ringRef.current.style.left = follower.current.x + "px";
-        ringRef.current.style.top = follower.current.y + "px";
+    const tick = () => {
+      cur.current.x += (pos.current.x - cur.current.x) * 0.1;
+      cur.current.y += (pos.current.y - cur.current.y) * 0.1;
+      if (ring.current) {
+        ring.current.style.left = cur.current.x + "px";
+        ring.current.style.top  = cur.current.y + "px";
       }
-      raf = requestAnimationFrame(animate);
+      raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(animate);
-
-    return () => {
-      document.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(raf);
-    };
+    raf = requestAnimationFrame(tick);
+    return () => { document.removeEventListener("mousemove", move); cancelAnimationFrame(raf); };
   }, []);
 
   return (
     <>
-      <div
-        ref={dotRef}
-        className="fixed w-2.5 h-2.5 bg-accent rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 mix-blend-difference"
-      />
-      <div
-        ref={ringRef}
-        className="fixed w-9 h-9 border border-accent/50 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-[width,height,border-color] duration-300"
-      />
+      <div ref={dot}  id="cursor-dot"  />
+      <div ref={ring} id="cursor-ring" />
     </>
   );
 }

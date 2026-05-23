@@ -1,33 +1,22 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const letters = ["P", "R", "E", "E", "T", "I"];
-
 export default function Loader() {
-  const [hidden, setHidden] = useState(false);
-
+  const [out, setOut] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setHidden(true), 1800);
+    const t = setTimeout(() => setOut(true), 2000);
     return () => clearTimeout(t);
   }, []);
 
   return (
-    <div
-      className={`fixed inset-0 bg-bg flex items-center justify-center z-[10000] transition-all duration-700 ${
-        hidden ? "opacity-0 invisible" : "opacity-100 visible"
-      }`}
-    >
-      <div className="flex gap-1">
-        {letters.map((l, i) => (
-          <span
-            key={i}
-            className="text-5xl md:text-7xl font-black grad-text animate-loader-bounce"
-            style={{ animationDelay: `${i * 0.1}s` }}
-          >
-            {l}
-          </span>
+    <div id="loader" className={out ? "out" : ""}>
+      <div className="loader-name">
+        {"Preeti".split("").map((ch, i) => (
+          <span key={i} style={{ animationDelay: `${i * 0.08}s` }}>{ch}</span>
         ))}
+        <span style={{ animationDelay: "0.55s", color: "#6D8196" }}>.</span>
       </div>
+      <div className="loader-progress" />
     </div>
   );
 }

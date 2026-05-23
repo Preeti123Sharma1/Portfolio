@@ -1,3 +1,4 @@
+"use client";
 import Cursor from "@/components/Cursor";
 import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
@@ -9,12 +10,14 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
+import RevealProvider from "@/components/RevealProvider";
 
 export default function Home() {
   return (
     <>
       <Cursor />
       <Loader />
+      <RevealProvider />
       <Navbar />
       <main>
         <Hero />

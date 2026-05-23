@@ -1,119 +1,186 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const marqueeItems = [
+  "UI/UX Design","·","React.js","·","Tailwind CSS","·","WordPress","·",
+  "Bootstrap","·","SCSS","·","HTML5","·","CSS3","·",
+  "UI/UX Design","·","React.js","·","Tailwind CSS","·","WordPress","·",
+  "Bootstrap","·","SCSS","·","HTML5","·","CSS3","·",
+];
+
+const roles = ["Web Designer", "UI/UX Specialist", "Front-end Developer"];
 
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const [roleIdx, setRoleIdx] = useState(0);
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
-    // Reveal hero elements after loader
-    const t = setTimeout(() => {
-      document.querySelectorAll(".hero-reveal").forEach((el) =>
-        el.classList.add("visible")
-      );
-    }, 1900);
+    const t = setTimeout(() => setVisible(true), 2100);
     return () => clearTimeout(t);
   }, []);
 
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    const t = setInterval(() => setRoleIdx(i => (i + 1) % roles.length), 2800);
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    const fn = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth  - 0.5) * 14;
+      const y = (e.clientY / window.innerHeight - 0.5) * 14;
+      const el = document.getElementById("h-deco");
+      if (el) el.style.transform = `translate(${x}px,${y}px)`;
+    };
+    window.addEventListener("mousemove", fn);
+    return () => window.removeEventListener("mousemove", fn);
+  }, []);
+
+  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const tr = "transition-all duration-700";
+  const v  = visible ? "opacity-100 translate-y-0 translate-x-0" : "";
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center gap-16 px-8 md:px-16 pt-32 pb-16 overflow-hidden"
-    >
-      {/* Background blobs */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="blob absolute w-[500px] h-[500px] rounded-full bg-accent blur-[80px] opacity-15 -top-24 -left-24 animate-blob-float" />
-        <div className="blob absolute w-[400px] h-[400px] rounded-full bg-accent2 blur-[80px] opacity-15 -bottom-24 right-[10%] animate-blob-float [animation-delay:3s]" />
-        <div className="blob absolute w-[300px] h-[300px] rounded-full bg-accent3 blur-[80px] opacity-15 top-[40%] left-[40%] animate-blob-float [animation-delay:6s]" />
-        <div className="absolute inset-0 grid-overlay" />
+    <section id="home" ref={ref} className="relative min-h-screen bg-base flex flex-col overflow-hidden">
+
+      {/* Decorative layer */}
+      <div id="h-deco" className="absolute inset-0 pointer-events-none transition-transform duration-700 ease-out">
+        {/* Soft accent glow */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[160px]"
+          style={{ background: "rgba(109,129,150,0.08)" }} />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full blur-[140px]"
+          style={{ background: "rgba(74,74,74,0.04)" }} />
+        {/* Dot grid */}
+        <div className="absolute inset-0"
+          style={{ backgroundImage:"radial-gradient(rgba(74,74,74,0.07) 1px,transparent 1px)", backgroundSize:"40px 40px" }} />
+        {/* Watermark */}
+        <span className="absolute right-0 top-16 font-serif font-black italic leading-none select-none pointer-events-none"
+          style={{ fontSize:"20vw", color:"rgba(74,74,74,0.04)" }}>PS</span>
+        {/* Decorative lines */}
+        <div className="absolute left-0 right-0 hidden lg:block" style={{ top:"38%", height:"1px", background:"rgba(74,74,74,0.06)" }} />
+        <div className="absolute top-0 bottom-0 hidden lg:block" style={{ left:"58%", width:"1px", background:"rgba(74,74,74,0.06)" }} />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex-1 max-w-2xl">
-        <div className="hero-reveal reveal-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-medium mb-6">
-          Available for work ✦
-        </div>
+      {/* Main content */}
+      <div className="relative z-10 flex-1 flex flex-col lg:flex-row items-center max-w-7xl mx-auto w-full px-6 md:px-12 pt-28 pb-12 gap-16">
 
-        <h1 className="flex flex-col font-black leading-[1.05] mb-4">
-          <span className="hero-reveal reveal-up delay-1 text-[clamp(3rem,7vw,6rem)] text-[#f0f0f8]">
-            Preeti
-          </span>
-          <span className="hero-reveal reveal-up delay-2 text-[clamp(3rem,7vw,6rem)] font-serif italic grad-text">
-            Sharma
-          </span>
-        </h1>
+        {/* Left */}
+        <div className="flex-1 max-w-2xl">
 
-        <p className="hero-reveal reveal-up delay-3 text-accent font-semibold tracking-widest uppercase text-sm mb-3">
-          Web Designer &amp; UI/UX Specialist
-        </p>
-
-        <p className="hero-reveal reveal-up delay-4 text-muted text-base leading-relaxed mb-10 max-w-lg">
-          Crafting responsive, user-friendly digital experiences with 2+ years
-          of expertise in UI/UX design, wireframing, and front-end development.
-        </p>
-
-        <div className="hero-reveal reveal-up delay-5 flex flex-wrap gap-4 mb-12">
-          <button
-            onClick={() => scrollTo("projects")}
-            className="cursor-none px-8 py-3.5 rounded-full grad-bg text-white font-semibold text-sm shadow-[0_8px_30px_rgba(167,139,250,0.3)] hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(167,139,250,0.4)] transition-all duration-300"
-          >
-            View My Work
-          </button>
-          <button
-            onClick={() => scrollTo("contact")}
-            className="cursor-none px-8 py-3.5 rounded-full border border-white/10 text-[#f0f0f8] font-semibold text-sm hover:border-accent hover:text-accent hover:-translate-y-1 transition-all duration-300"
-          >
-            Get In Touch
-          </button>
-        </div>
-
-        <div className="hero-reveal reveal-up delay-6 flex items-center gap-4 text-muted text-xs">
-          <span>Scroll down</span>
-          <div className="scroll-line" />
-        </div>
-      </div>
-
-      {/* Avatar visual */}
-      <div className="relative z-10 hidden lg:flex items-center justify-center flex-shrink-0">
-        <div className="relative w-[300px] h-[300px]">
-          {/* Rotating ring */}
-          <svg
-            className="absolute inset-0 w-full h-full animate-ring-rotate"
-            viewBox="0 0 300 300"
-          >
-            <defs>
-              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#a78bfa" />
-                <stop offset="100%" stopColor="#ec4899" />
-              </linearGradient>
-            </defs>
-            <circle
-              cx="150" cy="150" r="140"
-              fill="none"
-              stroke="url(#ringGrad)"
-              strokeWidth="1.5"
-              strokeDasharray="6 4"
-            />
-          </svg>
-
-          {/* Avatar circle */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] rounded-full bg-surface border border-white/[0.07] flex items-center justify-center">
-            <span className="text-6xl font-black grad-text">PS</span>
+          {/* Available badge */}
+          <div className={`${tr} ${v} opacity-0 translate-y-4 flex items-center gap-3 mb-8`}
+            style={{ transitionDelay: "0s" }}>
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <span className="section-label">Available for work</span>
           </div>
 
-          {/* Floating tags */}
-          {[
-            { label: "UI/UX",      cls: "top-2 -left-5  [animation-delay:0s]"  },
-            { label: "React.js",   cls: "top-2 -right-5 [animation-delay:1s]"  },
-            { label: "WordPress",  cls: "bottom-10 -left-8 [animation-delay:2s]" },
-            { label: "Tailwind",   cls: "bottom-10 -right-5 [animation-delay:3s]" },
-          ].map(({ label, cls }) => (
-            <div
-              key={label}
-              className={`absolute ${cls} px-3 py-1.5 bg-surface border border-white/[0.07] rounded-full text-xs font-semibold text-[#f0f0f8] whitespace-nowrap animate-tag-float`}
-            >
-              {label}
+          {/* Name */}
+          <h1 className="font-serif font-black leading-[0.92] mb-6">
+            <span className={`${tr} ${v} opacity-0 translate-y-6 block text-ink`}
+              style={{ fontSize:"clamp(3.5rem,8vw,7rem)", transitionDelay:"0.08s" }}>
+              Preeti
+            </span>
+            <span className={`${tr} ${v} opacity-0 translate-y-6 block italic text-accent`}
+              style={{ fontSize:"clamp(3.5rem,8vw,7rem)", transitionDelay:"0.16s" }}>
+              Sharma
+            </span>
+          </h1>
+
+          {/* Role ticker */}
+          <div className={`${tr} ${v} opacity-0 translate-y-4 flex items-center gap-3 mb-6`}
+            style={{ transitionDelay:"0.24s" }}>
+            <span className="w-6 h-px bg-accent flex-shrink-0" />
+            <span className="font-mono text-sm tracking-widest uppercase text-ink2 transition-all duration-500">
+              {roles[roleIdx]}
+            </span>
+          </div>
+
+          {/* Bio */}
+          <p className={`${tr} ${v} opacity-0 translate-y-4 text-ink2 text-base leading-relaxed max-w-md mb-10`}
+            style={{ transitionDelay:"0.32s" }}>
+            Crafting responsive, user-friendly digital experiences with{" "}
+            <span className="text-ink font-semibold">2+ years</span> of expertise
+            in UI/UX design, wireframing, and front-end development.
+          </p>
+
+          {/* CTAs */}
+          <div className={`${tr} ${v} opacity-0 translate-y-4 flex flex-wrap gap-4 mb-12`}
+            style={{ transitionDelay:"0.40s" }}>
+            <button onClick={() => go("projects")}
+              className="cursor-none group flex items-center gap-3 bg-accent text-base px-7 py-3.5 text-sm font-semibold tracking-wide hover:bg-accentD transition-colors duration-300">
+              View My Work
+              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button onClick={() => go("contact")}
+              className="cursor-none text-sm font-semibold tracking-wide px-7 py-3.5 border border-border text-ink2 hover:border-accent hover:text-accent transition-all duration-300">
+              Get In Touch
+            </button>
+          </div>
+
+          {/* Scroll hint */}
+          <div className={`${tr} ${v} opacity-0 translate-y-4 flex items-center gap-3 text-muted`}
+            style={{ transitionDelay:"0.48s" }}>
+            <div className="w-px h-10 bg-border relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1/2 bg-accent animate-[progressFill_2s_ease_infinite]" />
             </div>
+            <span className="font-mono text-xs tracking-widest uppercase">Scroll to explore</span>
+          </div>
+        </div>
+
+        {/* Right — profile card */}
+        <div className={`${tr} ${v} opacity-0 translate-x-8 hidden lg:block flex-shrink-0`}
+          style={{ transitionDelay:"0.32s" }}>
+          <div className="relative w-[300px]">
+            <div className="bg-surface border border-border p-8 relative"
+              style={{ boxShadow:"0 8px 40px rgba(74,74,74,0.08)" }}>
+              {/* Corner accents */}
+              {["top-2 left-2 border-t border-l","top-2 right-2 border-t border-r",
+                "bottom-2 left-2 border-b border-l","bottom-2 right-2 border-b border-r"].map((c,i) => (
+                <span key={i} className={`absolute w-4 h-4 ${c} border-accent/40`} />
+              ))}
+
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 rounded-full bg-card border border-border mx-auto flex items-center justify-center mb-4">
+                  <span className="font-serif font-black italic text-2xl text-accent">PS</span>
+                </div>
+                <h3 className="font-serif font-bold text-lg text-ink">Preeti Sharma</h3>
+                <p className="font-mono text-xs text-muted mt-1 tracking-wider uppercase">Web Designer</p>
+              </div>
+
+              <div>
+                {[
+                  { k:"Location",   v:"Lucknow, India" },
+                  { k:"Experience", v:"2+ Years" },
+                  { k:"Status",     v:"Open to Work" },
+                  { k:"Focus",      v:"UI/UX & Front-end" },
+                ].map(({ k, v }) => (
+                  <div key={k} className="flex justify-between items-center py-2.5 border-b border-line last:border-0">
+                    <span className="font-mono text-[0.62rem] uppercase tracking-wider text-muted">{k}</span>
+                    <span className="text-xs font-semibold text-ink">{v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Floating badge */}
+            <div className="absolute -bottom-4 -right-4 bg-accent text-white px-3 py-1.5 text-[0.65rem] font-bold tracking-widest uppercase float-y">
+              Lucknow, IN
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Marquee strip */}
+      <div className="relative z-10 marquee-wrap py-3 bg-surface border-t border-border">
+        <div className="marquee-track">
+          {marqueeItems.map((item, i) => (
+            <span key={i}
+              className="px-5 font-mono text-[0.65rem] tracking-widest uppercase whitespace-nowrap"
+              style={{ color: item === "·" ? "#6D8196" : "#9a9a9a" }}>
+              {item}
+            </span>
           ))}
         </div>
       </div>
