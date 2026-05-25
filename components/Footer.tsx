@@ -10,7 +10,7 @@ export default function Footer() {
           className="cursor-none font-serif italic font-black text-xl text-base hover:text-accent transition-colors">
           Preeti<span className="text-accent">.</span>
         </button>
-        <nav className="flex flex-wrap gap-6">
+        <nav className="flex flex-wrap gap-3 sm:gap-6">
           {["home","about","skills","experience","projects","contact"].map((l) => (
             <button key={l} onClick={() => go(l)}
               className="cursor-none font-mono text-[0.65rem] uppercase tracking-widest text-base/40 hover:text-[#ffffe3] transition-colors capitalize">

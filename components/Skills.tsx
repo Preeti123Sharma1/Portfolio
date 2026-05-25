@@ -42,14 +42,14 @@ export default function Skills() {
           {skills.map(({ name, pct }, i) => (
             <div
               key={name}
-              className="skill-row group flex items-center gap-5 py-5 border-b border-line"
+              className="skill-row group flex items-center gap-3 sm:gap-5 py-5 border-b border-line"
               data-reveal="up"
               data-delay={String((i % 4) + 1)}
             >
               <span className="font-mono text-[0.6rem] text-muted w-5 flex-shrink-0">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="font-serif font-bold text-lg text-ink flex-1 group-hover:text-accent transition-colors duration-300">
+              <span className="font-serif font-bold text-sm sm:text-lg text-ink flex-1 group-hover:text-accent transition-colors duration-300">
                 {name}
               </span>
               <div className="flex items-center gap-3 flex-shrink-0">

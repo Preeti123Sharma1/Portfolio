@@ -28,7 +28,7 @@ export default function About() {
         </div>
 
         {/* Bio + Stats */}
-        <div className="grid lg:grid-cols-[1fr_360px] gap-12 mb-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-12 mb-20 items-start">
 
           {/* Bio */}
           <div data-reveal="up" data-delay="1">
@@ -50,7 +50,7 @@ export default function About() {
               ].map(({ label, value }) => (
                 <div key={label} className="flex items-baseline gap-6 py-3 border-b border-line">
                   <span className="font-mono text-[0.62rem] uppercase tracking-widest text-muted w-20 flex-shrink-0">{label}</span>
-                  <span className="text-sm text-ink2">{value}</span>
+                  <span className="text-sm text-ink2 break-all">{value}</span>
                 </div>
               ))}
             </div>

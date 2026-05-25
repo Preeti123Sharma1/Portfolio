@@ -22,7 +22,7 @@ export default function Contact() {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-[1fr_1.3fr] gap-16 items-start">
+        <div className="grid lg:grid-cols-[1fr_1.3fr] sm:gap-6 lg:gap-16 items-start">
 
           {/* Info */}
           <div data-reveal="up" data-delay="1">
@@ -38,9 +38,9 @@ export default function Contact() {
                 { label:"Location", value:"Lucknow, India — 226021",       href:undefined },
               ].map(({ label, value, href }) => {
                 const inner = (
-                  <div className="group flex items-baseline gap-6 py-4 border-b border-line hover:border-accent/40 transition-colors duration-300">
+                  <div className="group flex items-baseline gap-3 sm:gap-6 py-4 border-b border-line hover:border-accent/40 transition-colors duration-300">
                     <span className="font-mono text-[0.62rem] uppercase tracking-widest text-muted w-20 flex-shrink-0">{label}</span>
-                    <span className="text-sm text-ink2 group-hover:text-accent transition-colors duration-300">{value}</span>
+                    <span className="text-sm text-ink2 group-hover:text-accent transition-colors duration-300 break-all">{value}</span>
                   </div>
                 );
                 return href
